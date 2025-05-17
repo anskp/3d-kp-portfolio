@@ -22,6 +22,9 @@ A modern and interactive portfolio website built with React, Material UI, Framer
 - **React Three Fiber** - React renderer for Three.js
 - **GSAP** - Animation library for advanced effects
 
+
+
+
 ## Project Structure
 
 ```
@@ -59,7 +62,19 @@ kp-portfolio/
 4. Build for production:
    ```
    npm run build
+
+
    ```
+
+## Screen Recorder
+
+[View Screen Recording](public/Screen%20Recording%202025-05-18%20034318.mp4)
+
+
+## Live Demo 
+
+[Link Text](https://3d-kp-portfolio.vercel.app/)
+
 
 ## Customization
 
