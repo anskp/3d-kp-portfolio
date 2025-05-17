@@ -58,7 +58,7 @@ function AppMUI() {
             width: '100%',
             height: '100%',
             pointerEvents: 'none',
-            zIndex: 1
+            zIndex: 5 // Higher z-index to make it appear in front of content
           }}
         >
           <ModelAnimation />
@@ -69,7 +69,7 @@ function AppMUI() {
           sx={{ 
             position: 'relative', 
             minHeight: '600vh', // Make sure we have enough scroll area for the animation
-            zIndex: 2 // Ensure content appears above the model
+            zIndex: 2 // Keep content above background but below the model
           }}
         >
           {/* About Section - Now the first section */}
@@ -79,10 +79,11 @@ function AppMUI() {
             sx={{ 
               pt: 0,
               mt: 0,
+              height: '100vh', // Set full height for the first section
               display: 'flex',
               alignItems: 'flex-start',
               position: 'relative',
-              zIndex: 10
+              zIndex: 0 // Lower z-index to appear behind the model
             }}
           >
             <Container maxWidth="xl">

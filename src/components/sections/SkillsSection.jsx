@@ -80,10 +80,13 @@ const SkillsSection = () => {
       component="section" 
       sx={{ 
         py: 10,
+        mt: '100vh',
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
-        bgcolor: theme.palette.background.default
+        bgcolor: 'transparent',
+        position: 'relative',
+        zIndex: 1
       }}
     >
       <Container>
