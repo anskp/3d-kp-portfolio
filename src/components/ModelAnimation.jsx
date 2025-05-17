@@ -6,7 +6,7 @@ function ModelAnimation() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [currentFrame, setCurrentFrame] = useState(0);
   const imagesRef = useRef([]);
-  const frameCountRef = useRef(301); // Increased to 301 to include male0301.png
+  const frameCountRef = useRef(300); // Changed from 301 to 300 to remove male0301.png
   const animationInitializedRef = useRef(false);
   const containerRef = useRef(null);
   const imageSeqRef = useRef({ frame: 0 });
@@ -14,7 +14,7 @@ function ModelAnimation() {
   const scrollSensitivityRef = useRef(15); // How many pixels to scroll for one frame
   
   const startFrame = 1; // Start from frame 1 (male0001.png)
-  const endFrame = 301; // End at frame 301 (male0301.png)
+  const endFrame = 300; // Changed from 301 to 300 to exclude male0301.png
 
   // Preload a specific image and return a promise
   const preloadImage = (index) => {
