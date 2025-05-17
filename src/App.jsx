@@ -69,7 +69,7 @@ function App() {
             component="section"
             sx={{ 
               minHeight: '100vh',
-              pt: 15, // Add more padding at the top since this is now the first section
+              pt: 8, // Reduce padding top from 15 to 8
               display: 'flex',
               alignItems: 'center',
               position: 'relative',
