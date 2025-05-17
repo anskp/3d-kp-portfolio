@@ -49,38 +49,49 @@ function AppMUI() {
       <Box sx={{ minHeight: '100vh' }}>
         <Navbar />
         
+        {/* Hidden model animation for scroll effects */}
+        <Box 
+          sx={{ 
+            position: 'fixed', 
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+            zIndex: 1
+          }}
+        >
+          <ModelAnimation />
+        </Box>
+        
         <Box 
           id="main" 
           sx={{ 
             position: 'relative', 
-            minHeight: '600vh' // Make sure we have enough scroll area for the animation
+            minHeight: '600vh', // Make sure we have enough scroll area for the animation
+            zIndex: 2 // Ensure content appears above the model
           }}
         >
-          {/* Load the model animation */}
-          <ModelAnimation />
-          
-          {/* About Section */}
+          {/* About Section - Now the first section */}
           <Box 
             id="about" 
             component="section"
             sx={{ 
-              minHeight: '100vh',
-              pt: 0, // Remove all top padding
-              mt: '-20px', // Add negative margin to move it up
+              pt: 0,
+              mt: 0,
               display: 'flex',
-              alignItems: 'flex-start', // Change from center to start to move content up
+              alignItems: 'flex-start',
               position: 'relative',
               zIndex: 10
             }}
           >
             <Container maxWidth="xl">
-              <Grid container spacing={5} alignItems="center">
+              <Grid container spacing={5} alignItems="flex-start">
                 <Grid item xs={12} md={6}>
                   <motion.div
                     initial={{ opacity: 0, x: -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
                   >
                     <Typography 
                       variant="overline"
@@ -88,7 +99,8 @@ function AppMUI() {
                       sx={{ 
                         color: 'primary.main',
                         fontWeight: 600,
-                        letterSpacing: 1.5
+                        letterSpacing: 1.5,
+                        mt: 4 // Add a small margin to prevent overlap with navbar
                       }}
                     >
                       MY STORY
