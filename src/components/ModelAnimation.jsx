@@ -16,6 +16,39 @@ function ModelAnimation() {
   const startFrame = 1; // Start from frame 1 (male0001.png)
   const endFrame = 300; // Changed from 301 to 300 to exclude male0301.png
 
+  // Create canvas element immediately when component mounts
+  useEffect(() => {
+    // Create or find the canvas element
+    let canvas = document.querySelector("canvas");
+    
+    if (!canvas) {
+      canvas = document.createElement("canvas");
+      canvas.style.position = "fixed";
+      canvas.style.top = "0";
+      canvas.style.left = "0";
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+      canvas.style.zIndex = "9";
+      canvas.style.pointerEvents = "none";
+      document.body.appendChild(canvas);
+      console.log("ModelAnimation: Created new canvas element");
+    } else {
+      console.log("ModelAnimation: Using existing canvas element");
+    }
+    
+    // Set initial dimensions
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // Store reference
+    canvasRef.current = canvas;
+    
+    return () => {
+      // Don't remove the canvas when component unmounts
+      // as it might be used by other scripts
+    };
+  }, []);
+
   // Preload a specific image and return a promise
   const preloadImage = (index) => {
     return new Promise((resolve, reject) => {
@@ -63,6 +96,7 @@ function ModelAnimation() {
   useEffect(() => {
     let canvas = canvasRef.current;
     if (!canvas) {
+      console.warn("Canvas ref is null, animation can't start");
       return;
     }
 

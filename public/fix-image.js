@@ -6,20 +6,36 @@
   function displayFirstImage() {
     console.log("Attempting to display first image directly");
     
-    // Get the canvas
-    const canvas = document.querySelector("canvas");
-    if (!canvas) {
-      console.error("Canvas not found! Retrying in 500ms...");
-      setTimeout(displayFirstImage, 500);
+    // Check if document.body exists yet
+    if (!document.body) {
+      console.log("Document body not ready yet, waiting...");
+      setTimeout(displayFirstImage, 50);
       return;
+    }
+    
+    // Get the canvas or create one if it doesn't exist
+    let canvas = document.querySelector("canvas");
+    
+    if (!canvas) {
+      console.log("Canvas not found, creating one...");
+      canvas = document.createElement("canvas");
+      canvas.style.position = "fixed";
+      canvas.style.top = "0";
+      canvas.style.left = "0";
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+      canvas.style.zIndex = "9";
+      canvas.style.pointerEvents = "none";
+      document.body.appendChild(canvas);
+    } else {
+      console.log("Found existing canvas");
     }
     
     // Set dimensions explicitly
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     canvas.style.display = "block";
-    canvas.style.position = "fixed";
-    canvas.style.pointerEvents = "none";
+    canvas.style.visibility = "visible";
     
     // Get context
     const ctx = canvas.getContext("2d");
@@ -41,7 +57,6 @@
       
       // Make sure the image is visible
       canvas.style.opacity = "1";
-      canvas.style.visibility = "visible";
       
       // Add success message
       const successDiv = document.createElement("div");
@@ -92,18 +107,14 @@
     console.log("🔄 Loading image from:", img.src);
   }
   
-  // Try to load image immediately
-  displayFirstImage();
-  
-  // Also set up event listener for when DOM is fully loaded
-  document.addEventListener("DOMContentLoaded", function() {
-    console.log("DOM loaded, trying to display image again");
-    displayFirstImage();
-  });
-  
-  // If we're already past DOMContentLoaded
-  if (document.readyState === "complete" || document.readyState === "interactive") {
-    console.log("Document already loaded, trying immediately");
-    displayFirstImage();
+  // Instead of running immediately, wait for DOM to be at least partly ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function() {
+      console.log("DOM Content Loaded, trying to display image");
+      displayFirstImage();
+    });
+  } else {
+    // If already past loading state, run with a slight delay to ensure body is available
+    setTimeout(displayFirstImage, 10);
   }
 })(); 

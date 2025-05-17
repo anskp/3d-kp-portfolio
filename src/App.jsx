@@ -7,9 +7,6 @@ import SkillsSection from './components/sections/SkillsSection'
 import { Box, Container, Grid, Typography, Button, Divider, Paper, useTheme } from '@mui/material'
 import { motion } from 'framer-motion'
 import ProjectCard from './components/ProjectCard'
-import AnimeScroll from './components/AnimeScroll'
-import AnimeEffects from './components/AnimeEffects'
-import AnimeModel from './components/AnimeModel'
 
 // Project data
 const projectsData = [
@@ -53,13 +50,12 @@ function App() {
 
   return (
     <ThemeContextProvider>
-      <Box sx={{ minHeight: '100vh' }}>
+      <Box sx={{ 
+        minHeight: '100vh',
+        bgcolor: 'background.default', // Explicitly set the background color
+        color: 'text.primary'
+      }}>
         <Navbar />
-        
-        {/* Anime.js Scroll and Effects */}
-        <AnimeScroll />
-        <AnimeEffects />
-        <AnimeModel />
         
         {/* Hidden model animation for scroll effects */}
         <Box 
@@ -70,7 +66,7 @@ function App() {
             width: '100%',
             height: '100%',
             pointerEvents: 'none',
-            zIndex: 5 // Higher z-index to make it appear in front of content
+            zIndex: 1 // Lower z-index to make it appear behind contact section
           }}
         >
           <ModelAnimation />
@@ -81,7 +77,8 @@ function App() {
           sx={{ 
             position: 'relative', 
             minHeight: '600vh', // Make sure we have enough scroll area for the animation
-            zIndex: 2 // Keep content above background but below the model
+            zIndex: 2, // Keep content above background but below the model
+            bgcolor: 'background.default' // Explicitly set background color to theme default
           }}
         >
           {/* About Section - Now the first section */}
@@ -93,15 +90,94 @@ function App() {
               mt: 0,
               height: 'auto', // Changed from 100vh to auto to prevent extra space
               minHeight: '60vh', // Set minimum height but not full viewport height
-              display: 'flex',
+              display: 'flex', 
               alignItems: 'flex-start',
               position: 'relative',
               zIndex: 0,
-              pb: 2 // Add a small padding at the bottom
+              pb: 2, // Add a small padding at the bottom
+              bgcolor: 'background.default' // Explicitly set background color to theme default
             }}
           >
-            <Container maxWidth="xl">
+            <Container maxWidth="xl" sx={{ position: 'relative' }}>
+              {/* Name Highlight - positioned absolutely relative to the container */}
+              <Box 
+                sx={{ 
+                  position: 'absolute',
+                  right: 0,
+                  top: '100px',
+                  padding: { xs: '0 20px', md: '0 48px' },
+                  zIndex: 20,
+                  display: 'block',
+                  width: 'auto'
+                }}
+              >
+                <motion.div
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 20,
+                    duration: 1.5
+                  }}
+                  whileHover={{ 
+                    scale: 1.05, 
+                    rotate: [0, -1, 1, -1, 0],
+                    transition: { duration: 0.5 }
+                  }}
+                  drag="x"
+                  dragConstraints={{ left: -50, right: 50 }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <motion.div
+                    style={{ position: 'relative' }}
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <motion.div
+                      style={{ 
+                        position: 'absolute',
+                        inset: '-4px',
+                        borderRadius: '8px',
+                        background: 'linear-gradient(45deg, #0070f3, #6c63ff)',
+                        filter: 'blur(15px)',
+                        opacity: 0.7
+                      }}
+                      animate={{ 
+                        opacity: [0.5, 0.8, 0.5],
+                        scale: [0.98, 1.02, 0.98]
+                      }}
+                      transition={{ 
+                        duration: 3,
+                        repeat: Infinity,
+                        repeatType: "mirror"
+                      }}
+                    />
+                <Typography 
+                      variant="h1"
+                  sx={{ 
+                        position: 'relative',
+                        fontSize: { xs: '3rem', sm: '4rem', md: '5rem' },
+                        fontWeight: 800,
+                        color: 'transparent',
+                        backgroundImage: (theme) => 
+                          theme.palette.mode === 'dark'
+                            ? 'linear-gradient(45deg, #149eca 20%, #6c63ff 70%)'
+                            : 'linear-gradient(45deg, #0070f3 30%, #6c63ff 90%)',
+                        backgroundClip: 'text',
+                        textShadow: (theme) => 
+                          theme.palette.mode === 'dark'
+                            ? '0 0 20px rgba(20, 158, 202, 0.3)'
+                            : '0 0 20px rgba(0, 112, 243, 0.2)'
+                      }}
+                    >
+                      ANAS KP
+                </Typography>
+              </motion.div>
+                </motion.div>
+          </Box>
+
               <Grid container spacing={5} alignItems="flex-start">
+                {/* Left column - Story and Title */}
                 <Grid item xs={12} md={6}>
                   <motion.div
                     initial={{ opacity: 0, x: -50 }}
@@ -143,7 +219,9 @@ function App() {
                   </motion.div>
                 </Grid>
                 
+                {/* Right column - Description */}
                 <Grid item xs={12} md={6}>
+                  {/* Description Paper */}
                   <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -214,7 +292,8 @@ function App() {
               minHeight: '100vh',
               py: 15,
               position: 'relative',
-              zIndex: 10
+              zIndex: 10,
+              bgcolor: 'background.default' // Explicitly set background color to theme default
             }}
           >
             <Container maxWidth="xl">
@@ -308,15 +387,17 @@ function App() {
               display: 'flex',
               alignItems: 'center',
               position: 'relative',
-              zIndex: 10
+              zIndex: 100, // Increased z-index to ensure it's in front of the model
+              bgcolor: 'background.default'
             }}
           >
-            <Container maxWidth="md">
+            <Container maxWidth="xl" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
+                style={{ width: '100%', maxWidth: '500px' }}
               >
                 <Paper
                   elevation={0}
@@ -325,10 +406,13 @@ function App() {
                     borderRadius: 3,
                     bgcolor: 'background.paper',
                     boxShadow: (theme) => theme.palette.mode === 'dark' 
-                      ? '0 5px 20px rgba(0,0,0,0.3)' 
-                      : '0 5px 20px rgba(0,0,0,0.1)',
+                      ? '0 8px 32px rgba(0,0,0,0.5)' 
+                      : '0 8px 32px rgba(0,0,0,0.15)',
                     border: (theme) => `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`,
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    position: 'relative', // Ensure proper stacking context
+                    zIndex: 101, // Higher than parent to ensure it's in foreground
+                    backdropFilter: 'blur(5px)', // Add blur effect to ensure visibility
                   }}
                 >
                   <Typography 

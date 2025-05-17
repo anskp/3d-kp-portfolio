@@ -84,7 +84,7 @@ const SkillsSection = () => {
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
-        bgcolor: 'transparent',
+        bgcolor: 'background.default',
         position: 'relative',
         zIndex: 1
       }}
