@@ -83,11 +83,13 @@ function App() {
             sx={{ 
               pt: 0,
               mt: 0,
-              height: '100vh', // Set full height for the first section
+              height: 'auto', // Changed from 100vh to auto to prevent extra space
+              minHeight: '60vh', // Set minimum height but not full viewport height
               display: 'flex',
               alignItems: 'flex-start',
               position: 'relative',
-              zIndex: 0 // Lower z-index to appear behind the model
+              zIndex: 0,
+              pb: 2 // Add a small padding at the bottom
             }}
           >
             <Container maxWidth="xl">

@@ -79,8 +79,8 @@ const SkillsSection = () => {
       id="skills" 
       component="section" 
       sx={{ 
-        py: 10,
-        mt: '100vh',
+        py: 5,
+        mt: '30px',
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',

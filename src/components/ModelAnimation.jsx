@@ -193,17 +193,17 @@ function ModelAnimation() {
             return;
           }
           
-          // Even more gradual progression - use 65% of the page height
-          // to spread the animation frames across, reserving 35% for viewing
+          // Even more gradual progression - use 85% of the page height
+          // to spread the animation frames across, reserving 15% for viewing
           // the final content with the final frame
           let scrollFraction;
           
-          if (scrollPosition >= totalScrollHeight * 0.65) {
-            // If we're in the last 35% of the page, use the last frame
+          if (scrollPosition >= totalScrollHeight * 0.85) {
+            // If we're in the last 15% of the page, use the last frame
             scrollFraction = 1;
           } else {
-            // Otherwise distribute frames across the first 65% of scrolling
-            scrollFraction = Math.min(scrollPosition / (totalScrollHeight * 0.65), 1);
+            // Otherwise distribute frames across the first 85% of scrolling
+            scrollFraction = Math.min(scrollPosition / (totalScrollHeight * 0.85), 1);
           }
           
           // Calculate frame index with smoother transitions
