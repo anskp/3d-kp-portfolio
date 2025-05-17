@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Model Auto Animation</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+    
+    .controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      background: rgba(0,0,0,0.7);
+      padding: 10px 20px;
+      border-radius: 10px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    
+    button {
+      background: #333;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    
+    button:hover {
+      background: #555;
+    }
+    
+    .slider {
+      width: 300px;
+    }
+    
+    .info {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.7);
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 2;
+    }
+  </style>
+  <!-- Include GSAP from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+  <div class="info">
+    <h1>3D Model Animation</h1>
+    <p>Automatic animation of 300 sequential frames</p>
+    <p>Use controls to adjust speed and playback</p>
+  </div>
+  
+  <canvas id="canvas"></canvas>
+  
+  <div class="controls">
+    <button id="playPause">Pause</button>
+    <button id="slower">Slower</button>
+    <button id="faster">Faster</button>
+    <input type="range" min="0" max="299" value="0" class="slider" id="frameSlider">
+    <span id="frameCounter">Frame: 1/300</span>
+  </div>
+
+  <script>
+    // Get references to DOM elements
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const playPauseBtn = document.getElementById('playPause');
+    const slowerBtn = document.getElementById('slower');
+    const fasterBtn = document.getElementById('faster');
+    const frameSlider = document.getElementById('frameSlider');
+    const frameCounter = document.getElementById('frameCounter');
+    
+    // Set up canvas
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    // Animation variables
+    const frameCount = 300;
+    const images = [];
+    let currentFrame = 0;
+    let isPlaying = true;
+    let animationSpeed = 1; // frames per tick
+    let animationDuration = 5; // seconds for full sequence
+    
+    // Generate file paths for all frames
+    function getImagePath(index) {
+      const frameNumber = (index + 1).toString().padStart(4, '0');
+      return `/images/male${frameNumber}.png`;
+    }
+    
+    // Load all images
+    function preloadImages() {
+      const loadingText = document.createElement('div');
+      loadingText.style.position = 'fixed';
+      loadingText.style.top = '50%';
+      loadingText.style.left = '50%';
+      loadingText.style.transform = 'translate(-50%, -50%)';
+      loadingText.style.fontSize = '24px';
+      loadingText.style.color = 'white';
+      loadingText.textContent = 'Loading images: 0%';
+      document.body.appendChild(loadingText);
+      
+      let loadedCount = 0;
+      
+      for (let i = 0; i < frameCount; i++) {
+        const img = new Image();
+        
+        img.onload = () => {
+          loadedCount++;
+          const percent = Math.floor((loadedCount / frameCount) * 100);
+          loadingText.textContent = `Loading images: ${percent}%`;
+          
+          if (loadedCount === frameCount) {
+            document.body.removeChild(loadingText);
+            startAnimation();
+          }
+        };
+        
+        img.onerror = () => {
+          console.error(`Error loading image: ${img.src}`);
+          loadedCount++;
+        };
+        
+        img.src = getImagePath(i);
+        images.push(img);
+      }
+    }
+    
+    // Draw a specific frame
+    function drawFrame(index) {
+      if (!images[index] || !images[index].complete) return;
+      
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Scale image to fit canvas while maintaining aspect ratio
+      const img = images[index];
+      const hRatio = canvas.width / img.width;
+      const vRatio = canvas.height / img.height;
+      const ratio = Math.min(hRatio, vRatio);
+      const centerX = (canvas.width - img.width * ratio) / 2;
+      const centerY = (canvas.height - img.height * ratio) / 2;
+      
+      ctx.drawImage(img, 0, 0, img.width, img.height, centerX, centerY, img.width * ratio, img.height * ratio);
+      
+      // Update UI
+      frameCounter.textContent = `Frame: ${index + 1}/300`;
+      frameSlider.value = index;
+    }
+    
+    // Animation loop
+    function startAnimation() {
+      // Create a GSAP timeline for the animation
+      const tl = gsap.timeline({ repeat: -1 });
+      
+      // Set the duration for each frame
+      const frameDuration = animationDuration / frameCount;
+      
+      // Create the animation that updates the frame counter
+      tl.to({ frame: 0 }, {
+        frame: frameCount - 1,
+        duration: animationDuration,
+        ease: "none",
+        onUpdate: function() {
+          const frame = Math.round(this.targets()[0].frame);
+          currentFrame = frame;
+          drawFrame(frame);
+        }
+      });
+      
+      // Store the timeline for later access
+      window.animation = tl;
+    }
+    
+    // Event handlers
+    playPauseBtn.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      playPauseBtn.textContent = isPlaying ? 'Pause' : 'Play';
+      
+      if (window.animation) {
+        if (isPlaying) {
+          window.animation.play();
+        } else {
+          window.animation.pause();
+        }
+      }
+    });
+    
+    slowerBtn.addEventListener('click', () => {
+      if (window.animation) {
+        window.animation.timeScale(window.animation.timeScale() * 0.5);
+      }
+    });
+    
+    fasterBtn.addEventListener('click', () => {
+      if (window.animation) {
+        window.animation.timeScale(window.animation.timeScale() * 2);
+      }
+    });
+    
+    frameSlider.addEventListener('input', () => {
+      const frame = parseInt(frameSlider.value);
+      currentFrame = frame;
+      drawFrame(frame);
+      
+      // Pause animation while scrubbing
+      if (window.animation && isPlaying) {
+        window.animation.pause();
+        window.animation.progress(frame / (frameCount - 1));
+      }
+    });
+    
+    frameSlider.addEventListener('change', () => {
+      // Resume animation after scrubbing
+      if (window.animation && isPlaying) {
+        window.animation.play();
+      }
+    });
+    
+    // Start preloading
+    preloadImages();
+    
+    // Draw first frame immediately if available
+    const firstImage = new Image();
+    firstImage.onload = () => {
+      ctx.drawImage(firstImage, 0, 0, canvas.width, canvas.height);
+    };
+    firstImage.src = getImagePath(0);
+  </script>
+</body>
+</html> 

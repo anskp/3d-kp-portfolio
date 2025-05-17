@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Very Simple Image Test</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    img {
+      max-width: 80vw;
+      max-height: 80vh;
+      margin-bottom: 20px;
+      border: 1px solid #333;
+    }
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      padding: 8px 15px;
+      background: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Simple 3D Model Image Test</h1>
+  <img id="modelImage" src="/images/male0001.png" alt="3D Model" />
+  
+  <div id="status"></div>
+  
+  <div class="controls">
+    <button onclick="checkImage()">Check Image</button>
+    <button onclick="reloadPage()">Reload Page</button>
+  </div>
+
+  <script>
+    const statusDiv = document.getElementById('status');
+    const modelImage = document.getElementById('modelImage');
+    
+    // Show image load status
+    modelImage.onload = function() {
+      statusDiv.textContent = `Image loaded successfully! Size: ${this.naturalWidth}x${this.naturalHeight}`;
+      statusDiv.style.color = 'green';
+    };
+    
+    modelImage.onerror = function() {
+      statusDiv.textContent = `Error loading image from: ${this.src}`;
+      statusDiv.style.color = 'red';
+    };
+    
+    function checkImage() {
+      // Check if image loaded properly
+      if (modelImage.complete && modelImage.naturalWidth > 0) {
+        alert(`Image loaded successfully! Size: ${modelImage.naturalWidth}x${modelImage.naturalHeight}`);
+      } else {
+        alert('Image failed to load properly.');
+      }
+    }
+    
+    function reloadPage() {
+      location.reload();
+    }
+  </script>
+</body>
+</html> 

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        img {
+            max-width: 500px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+        }
+        .status {
+            margin: 5px 0;
+            padding: 5px;
+            font-size: 14px;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Loading Test</h1>
+    <div id="image-container">
+        <p>Testing image loading from /images/male0001.png</p>
+        <img src="/images/male0001.png" alt="Test Image" id="test-image">
+        <div id="image-status" class="status"></div>
+    </div>
+    <div>
+        <p>GitHub Logo test:</p>
+        <img src="/images/github_logo.png" alt="GitHub Logo" id="github-logo">
+        <div id="github-status" class="status"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const testImage = document.getElementById('test-image');
+            const imageStatus = document.getElementById('image-status');
+            const githubLogo = document.getElementById('github-logo');
+            const githubStatus = document.getElementById('github-status');
+            
+            testImage.onload = function() {
+                imageStatus.textContent = 'Image loaded successfully!';
+                imageStatus.className = 'status success';
+            };
+            
+            testImage.onerror = function() {
+                imageStatus.textContent = 'Error loading image!';
+                imageStatus.className = 'status error';
+            };
+
+            githubLogo.onload = function() {
+                githubStatus.textContent = 'GitHub logo loaded successfully!';
+                githubStatus.className = 'status success';
+            };
+            
+            githubLogo.onerror = function() {
+                githubStatus.textContent = 'Error loading GitHub logo!';
+                githubStatus.className = 'status error';
+            };
+        });
+    </script>
+</body>
+</html> 

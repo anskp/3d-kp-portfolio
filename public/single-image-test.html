@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Image Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        
+        canvas {
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        button {
+            margin: 0 5px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <h1>3D Model Image Test</h1>
+    <canvas id="imageCanvas"></canvas>
+    
+    <div class="controls">
+        <button id="prevButton">Previous Image</button>
+        <span id="imageCounter">1/300</span>
+        <button id="nextButton">Next Image</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('imageCanvas');
+            const ctx = canvas.getContext('2d');
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+            const imageCounter = document.getElementById('imageCounter');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            let currentImage = 1;
+            const totalImages = 300;
+            const images = [];
+            
+            // Preload a few images
+            for (let i = 1; i <= 10; i++) {
+                const img = new Image();
+                const num = i.toString().padStart(4, '0');
+                img.src = `/images/male${num}.png`;
+                images.push(img);
+            }
+            
+            function loadAndRenderImage(index) {
+                if (index < 1) index = 1;
+                if (index > totalImages) index = totalImages;
+                
+                currentImage = index;
+                imageCounter.textContent = `${currentImage}/${totalImages}`;
+                
+                const num = currentImage.toString().padStart(4, '0');
+                const imagePath = `/images/male${num}.png`;
+                
+                // If the image is already loaded, use it
+                if (images[currentImage - 1] && images[currentImage - 1].complete) {
+                    renderImage(images[currentImage - 1]);
+                    return;
+                }
+                
+                // Otherwise load it
+                const img = new Image();
+                img.onload = function() {
+                    renderImage(img);
+                    images[currentImage - 1] = img; // Cache it
+                };
+                
+                img.onerror = function() {
+                    ctx.fillStyle = 'black';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    ctx.fillStyle = 'red';
+                    ctx.font = '24px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`Failed to load image: ${imagePath}`, canvas.width/2, canvas.height/2);
+                };
+                
+                img.src = imagePath;
+            }
+            
+            function renderImage(img) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Option 1: Simple drawing (full screen)
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            }
+            
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                loadAndRenderImage(currentImage);
+            });
+            
+            prevButton.addEventListener('click', function() {
+                loadAndRenderImage(currentImage - 1);
+            });
+            
+            nextButton.addEventListener('click', function() {
+                loadAndRenderImage(currentImage + 1);
+            });
+            
+            // Initial load
+            loadAndRenderImage(1);
+        });
+    </script>
+</body>
+</html> 
