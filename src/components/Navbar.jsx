@@ -314,8 +314,8 @@ const Navbar = () => {
         {drawer}
       </Drawer>
       
-      {/* Toolbar spacer */}
-      <Toolbar />
+      {/* Small spacer to prevent content from being hidden under AppBar */}
+      <Box sx={{ height: '30px' }} />
     </>
   );
 };

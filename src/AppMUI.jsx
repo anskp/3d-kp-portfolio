@@ -65,9 +65,10 @@ function AppMUI() {
             component="section"
             sx={{ 
               minHeight: '100vh',
-              pt: 8, // Reduce padding top from 15 to 8
+              pt: 0, // Remove all top padding
+              mt: '-20px', // Add negative margin to move it up
               display: 'flex',
-              alignItems: 'center',
+              alignItems: 'flex-start', // Change from center to start to move content up
               position: 'relative',
               zIndex: 10
             }}
