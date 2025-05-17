@@ -7,6 +7,9 @@ import SkillsSection from './components/sections/SkillsSection'
 import { Box, Container, Grid, Typography, Button, Divider, Paper, useTheme } from '@mui/material'
 import { motion } from 'framer-motion'
 import ProjectCard from './components/ProjectCard'
+import AnimeScroll from './components/AnimeScroll'
+import AnimeEffects from './components/AnimeEffects'
+import AnimeModel from './components/AnimeModel'
 
 // Project data
 const projectsData = [
@@ -52,6 +55,11 @@ function App() {
     <ThemeContextProvider>
       <Box sx={{ minHeight: '100vh' }}>
         <Navbar />
+        
+        {/* Anime.js Scroll and Effects */}
+        <AnimeScroll />
+        <AnimeEffects />
+        <AnimeModel />
         
         {/* Hidden model animation for scroll effects */}
         <Box 
