@@ -4,7 +4,7 @@ import ModelAnimation from './components/ModelAnimation'
 import { ThemeContextProvider } from './context/ThemeContext'
 import Navbar from './components/Navbar'
 import SkillsSection from './components/sections/SkillsSection'
-import { Box, Container, Grid, Typography, Button, Divider, Paper } from '@mui/material'
+import { Box, Container, Grid, Typography, Button, Divider, Paper, useTheme } from '@mui/material'
 import { motion } from 'framer-motion'
 import ProjectCard from './components/ProjectCard'
 
@@ -41,6 +41,8 @@ const projectsData = [
 ];
 
 function App() {
+  const theme = useTheme();
+  
   useEffect(() => {
     // This will run when the component mounts
     window.scrollTo(0, 0);
@@ -61,92 +63,13 @@ function App() {
           {/* Load the model animation */}
           <ModelAnimation />
           
-          {/* Home Section */}
-          <Box 
-            id="home" 
-            sx={{ 
-              height: '100vh', 
-              display: 'flex', 
-              flexDirection: 'column', 
-              justifyContent: 'center',
-              position: 'relative',
-              zIndex: 10 // Ensure text is above canvas
-            }}
-          >
-            <Container maxWidth="xl">
-              <Box 
-                id="loop" 
-                sx={{ 
-                  display: 'flex', 
-                  position: 'relative',
-                  overflowX: 'hidden',
-                  whiteSpace: 'nowrap',
-                  mb: 8
-                }}
-              >
-                <Typography 
-                  variant="h1" 
-                  component="h1"
-                  sx={{ 
-                    fontWeight: 'bold',
-                    fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem' },
-                    textTransform: 'uppercase',
-                    animation: 'marquee 15s linear infinite',
-                    '@keyframes marquee': {
-                      '0%': { transform: 'translateX(0%)' },
-                      '100%': { transform: 'translateX(-50%)' }
-                    }
-                  }}
-                >
-                  <b>MUHAMMED</b> <span style={{ fontWeight: 'normal' }}>ANAS KP</span> IS A <b><i>DIGITAL</i></b> <span style={{ fontWeight: 'normal' }}>CRAFTSMAN</span> IN THE <span style={{ fontWeight: 'normal', fontStyle: 'italic' }}>TECH WORLD</span>. &nbsp;&nbsp;&nbsp;
-                  <b>MUHAMMED</b> <span style={{ fontWeight: 'normal' }}>ANAS KP</span> IS A <b><i>DIGITAL</i></b> <span style={{ fontWeight: 'normal' }}>CRAFTSMAN</span> IN THE <span style={{ fontWeight: 'normal', fontStyle: 'italic' }}>TECH WORLD</span>.
-                </Typography>
-              </Box>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-              >
-                <Typography 
-                  variant="h4" 
-                  component="h3"
-                  align="center"
-                  sx={{ 
-                    mb: 2,
-                    maxWidth: '80%',
-                    mx: 'auto',
-                    fontWeight: 500
-                  }}
-                >
-                  BUILDING SECURE, INTELLIGENT, AND CREATIVE DIGITAL EXPERIENCES
-                  <br />
-                  ACROSS WEB, BLOCKCHAIN, AND CYBERSECURITY DOMAINS
-                </Typography>
-                
-                <Typography 
-                  variant="h6" 
-                  component="h4"
-                  align="center"
-                  sx={{ 
-                    opacity: 0.8,
-                    fontWeight: 400,
-                    fontStyle: 'italic'
-                  }}
-                >
-                  ...SCROLL TO EXPLORE MY WORLD
-                </Typography>
-              </motion.div>
-            </Container>
-          </Box>
-
           {/* About Section */}
           <Box 
             id="about" 
             component="section"
             sx={{ 
               minHeight: '100vh',
-              py: 15,
+              pt: 15, // Add more padding at the top since this is now the first section
               display: 'flex',
               alignItems: 'center',
               position: 'relative',

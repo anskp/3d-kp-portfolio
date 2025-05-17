@@ -30,7 +30,6 @@ import { motion } from 'framer-motion';
 
 // NavLinks data
 const navLinks = [
-  { name: 'Home', href: '#home' },
   { name: 'About', href: '#about' },
   { name: 'Skills', href: '#skills' },
   { name: 'Projects', href: '#projects' },
@@ -51,7 +50,7 @@ function HideOnScroll(props) {
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState('about');
   const { toggleColorMode, mode } = useThemeContext();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
